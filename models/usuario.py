@@ -26,3 +26,12 @@ class Usuario(db.Model):
     def create(self):
         db.session.add(self)
         db.session.commit()
+    
+    @staticmethod
+    def get_email(email):
+        return Usuario.query.filter_by(Email=email).first()
+        
+    @staticmethod
+    def login():
+        username = 'cliente'
+        password = 'abc12345'

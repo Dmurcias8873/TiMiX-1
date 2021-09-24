@@ -21,4 +21,10 @@ class Cancion(db.Model):
     @staticmethod
     def get_id():
         return Cancion.query.filter_by(idcancion = 2).first()
+    
+    @staticmethod
+    def get_cancion(nombre):
+        return Cancion.query.filter_by(Nombre=nombre).first()
+    
+  
 
