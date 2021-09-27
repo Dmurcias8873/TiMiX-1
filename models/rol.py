@@ -6,5 +6,6 @@ class Rol(db.Model):
 
     idRol = db.Column(db.Integer, primary_key=True)
     NombreR = db.Column(db.String, nullable=False)
+    usuarios = db.relationship('Usuario', backref='usuario', userlist = True)
 
-@staticmethod
+

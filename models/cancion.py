@@ -9,10 +9,10 @@ class Cancion(db.Model):
     idcancion = db.Column(db.Integer, primary_key=True)
     Nombre = db.Column(db.String, nullable=False)
     Año = db.Column(db.Integer, nullable=False)
-    # ArtistaId = db.Column(db.integer, nullable=False)
-    # AlbumId = db.Column(db.integer, nullable=False)
-    # CategoryId = db.Column(db.integer, nullable=False)
-    # GeneracionId = db.Column(db.integer, nullable=False)
+    ArtistaId = db.Column(db.integer, db.ForeignKey('roles.idRol'), nullable=False)
+    AlbumId = db.Column(db.integer, db.ForeignKey('Albumes.idAlbum'), nullable=False)
+    CategoryId = db.Column(db.integer, db.ForeignKey('Categorias.idCategory'), nullable=False)
+    GeneracionId = db.Column(db.integer, db.ForeignKey('Generaciones.idGeneracion'), nullable=False)
 
     @staticmethod
     def get_all():
