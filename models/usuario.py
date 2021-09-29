@@ -10,14 +10,17 @@ class Usuario(db.Model):
     NombreU = db.Column(db.String, nullable=False)
     Email = db.Column(db.String, nullable=False)
     RolId = db.Column(db.Integer, db.ForeignKey('roles.idRol'), nullable=False)
-    Fecha = db.Column(db.date, nullable=False)
+    Fecha = db.Column(db.Date, nullable=False)
     
-    
+        
     def __init__(self, NombreU, Email, RolId, Fecha):
         self.NombreU = NombreU
         self.Email = Email
         self.RolId = RolId
         self.Fecha = Fecha
+        
+    def __str__(self):
+        return f'<Usuario> {self.idUsuario} {self.NombreU} {self.Email} {self.RolId} {self.Fecha}'
     
     @staticmethod
     def get_all():

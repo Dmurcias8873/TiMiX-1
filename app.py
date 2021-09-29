@@ -9,21 +9,36 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 from models.cancion import Cancion
+from models.usuario import Usuario
 from models.rol import Rol
 
-@app.route('/')
-def hello():
-    NCancion = ''
+@app.route('/canciones')
+def Listarcancion():
+    NCancion = []
     canciones = Cancion.get_all()
     for cancion in canciones:
-        NCancion += cancion.Nombre
-        print(type(cancion))
+        NCancion.append(cancion.__str__())
+        print (cancion)        
     return NCancion
 
-@app.rohte('/login')
-def login():
-    success = False
-    user = Usuario.get_email(email)
-    
-    if (user):
-        
+
+
+#@app.route('/')
+#def hello():
+#    NCancion = ''
+#    canciones = Cancion.get_all()
+#    for cancion in canciones:
+#        NCancion += cancion.Nombre
+#        print(cancion)
+#    return NCancion
+
+
+
+#@app.rohte('/login')
+#def login():
+#def login():
+#    success = False
+#    user = Usuario.get_email(email)
+#    
+#    if (user):
+#        
