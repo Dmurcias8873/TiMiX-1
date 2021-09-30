@@ -9,17 +9,33 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 from models.cancion import Cancion
+from models.artista import Artista
+from models.categoria import Categoria
+from models.album import Album
+from models.generacion import Generacion
+from models.listas import Listas
 from models.usuario import Usuario
 from models.rol import Rol
 
 @app.route('/canciones')
 def Listarcancion():
-    NCancion = []
+    NCancion = {}
     canciones = Cancion.get_all()
     for cancion in canciones:
-        NCancion.append(cancion.__str__())
+        NCancion[canciones.index(cancion)] = cancion.__str__()
         print (cancion)        
     return NCancion
+
+@app.route('/categorias')
+def Listarcategoria():
+    NCategoria = {}
+    categorias = Categoria.get_categorias(  )
+    for categoria in categorias:
+        NCategoria[categorias.index(categoria)] = categoria.__str__()
+        print (categoria)        
+    return NCategoria
+
+
 
 
 

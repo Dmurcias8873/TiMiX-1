@@ -1,4 +1,4 @@
-
+from models.userlist import UserList
 from app import db
 
 
@@ -11,9 +11,11 @@ class Cancion(db.Model):
     Año = db.Column(db.Integer, nullable=False)
     ArtistaId = db.Column(db.Integer, db.ForeignKey('roles.idRol'), nullable=False)
     AlbumId = db.Column(db.Integer, db.ForeignKey('Albumes.idAlbum'), nullable=False)
-    CategoriaId = db.Column(db.Integer, db.ForeignKey('Categorias.idCategory'), nullable=False)
+    CategoriaId = db.Column(db.Integer, db.ForeignKey('Categorias.idCategoria'), nullable=False)
     GeneracionId = db.Column(db.Integer, db.ForeignKey('Generaciones.idGeneracion'), nullable=False)
     Duracion = db.Column(db.String, nullable=False)
+    
+    ListaCancion = db.relationship('Listas', secondary = UserList)
     
     
     def __init__(self, Nombre, Año, ArtistaId, AlbumId, CategoriaId, GeneracionId, Duracion):
@@ -31,6 +33,10 @@ class Cancion(db.Model):
 
     @staticmethod
     def get_all():
+        return Cancion.query.all()
+    
+    @staticmethod
+    def filtroCancion():
         return Cancion.query.all()
 
     @staticmethod

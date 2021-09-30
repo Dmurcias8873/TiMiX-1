@@ -1,4 +1,5 @@
 
+from datetime import datetime
 from app import db
 
 
@@ -10,7 +11,9 @@ class Usuario(db.Model):
     NombreU = db.Column(db.String, nullable=False)
     Email = db.Column(db.String, nullable=False)
     RolId = db.Column(db.Integer, db.ForeignKey('roles.idRol'), nullable=False)
-    Fecha = db.Column(db.Date, nullable=False)
+    Fecha = db.Column(db.Date, default = datetime.now, nullable=False)
+    
+    lista = db.relationship('Listas', backref='playlist', uselist = True)
     
         
     def __init__(self, NombreU, Email, RolId, Fecha):
