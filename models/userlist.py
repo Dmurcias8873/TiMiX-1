@@ -1,8 +1,7 @@
 from app import db
 
-class UserList(db.Model):
-    
-    __tablename__ = 'UserList'
 
-    PlaylistId = db.Column(db.integer, db.ForeignKey('Playlist.idPlaylist'), nullable=False)
-    CancionId = db.Column(db.integer, db.ForeignKey('Cancion.idCancion'), nullable=False)
+UserList = db.Table('UserList',
+    db.Column('PlaylistId', db.Integer, db.ForeignKey('Playlist.idPlaylist'), primary_key=True),
+    db.Column('CancionId', db.Integer, db.ForeignKey('Canciones.idcancion'), primary_key=True)
+)
