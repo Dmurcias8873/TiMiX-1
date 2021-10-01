@@ -9,8 +9,7 @@ class Album(db.Model):
     Caratula = db.Column(db.String, nullable=False)
     Canciones = db.relationship('Cancion', backref='album', uselist=True)
 
-    def __init__(self, idAlbum, Album, Caratula, Canciones):
-        self.idcancion = idAlbum
+    def __init__(self, Album, Caratula, Canciones):
         self.Album = Album
         self.Caratula = Caratula
         self.Canciones = Canciones

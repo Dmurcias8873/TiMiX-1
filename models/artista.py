@@ -13,7 +13,7 @@ class Artista(db.Model):
         self.Nacionalidad = Nacionalidad 
     
     def __str__(self):
-        return f'Album {self.idArtista} {self.Nombre} {self.Nacionalidad}'
+        return f'Artista {self.idArtista} {self.Nombre} {self.Nacionalidad}'
 
     @staticmethod
     def ListarArtista():

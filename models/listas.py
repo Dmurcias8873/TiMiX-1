@@ -10,14 +10,13 @@ class Listas(db.Model):
     NombreP = db.Column(db.String, nullable=False)
     usuarioId = db.Column(db.Integer, db.ForeignKey('Usuarios.idUsuario'), nullable=False)
     
-    def __init__(self, idPlaylist, NombreP, usuarioId):
-        self.idPlaylist = idPlaylist
+    def __init__(self, NombreP, usuarioId):
         self.NombreP = NombreP
         self.usuarioId = usuarioId
             
     def __str__(self):
-        return f'Playlist {self.idPlaylist} {self.NombreP} {self.usuarioId}'
+        return f'Playlist {self.NombreP} {self.usuarioId}'
 
     @staticmethod
     def ListarPlaylist():
-        return Playlist.query.all()
+        return Listas.query.all()
