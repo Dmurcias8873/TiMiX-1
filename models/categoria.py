@@ -13,7 +13,7 @@ class Categoria(db.Model):
         self.NombreCat = NombreCat
     
     def __str__(self):
-        return f'Album {self.idCategoria} {self.NombreCat}'
+        return f'Categoria {self.idCategoria} {self.NombreCat}'
     
     @staticmethod
     def get_categorias():

@@ -13,7 +13,7 @@ class Generacion(db.Model):
         self.NombreG = NombreG
 
     def __str__(self):
-        return f'Album {self.idGeneracion} {self.NombreG}'
+        return f'Generacion {self.idGeneracion} {self.NombreG}'
 
     @staticmethod
     def ListaGeneracion():
