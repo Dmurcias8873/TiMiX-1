@@ -39,7 +39,20 @@ class Cancion(db.Model):
     def filtroCancion():
         return Cancion.query.with_entities(Cancion.Nombre, Cancion.Año, Cancion.Duracion).filter_by(CategoriaId=1).all()
     
+    @staticmethod
+    def filtroArtista():
+        return Cancion.query.filter_by(ArtistaId=7).all()
     
+    @staticmethod
+    def filtroCategoria():
+        return Cancion.query.filter_by(CategoriaId=2).all()
+    
+    @staticmethod
+    def filtroGeneracion():
+        return Cancion.query.filter_by(GeneracionId=2).all()
+    
+    
+
     @staticmethod
     def get_id():
         return Cancion.query.filter_by(idcancion = 2).first()

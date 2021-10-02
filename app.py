@@ -23,10 +23,10 @@ from models.rol import Rol
 @app.route('/registro')
 def registro():
    
-   username = 'MarisolR'
+   username = 'DaironM'
    password = 'misiontic2021'
-   email = 'mrodriguezrodriguez380@gmail.com'
-   rol = Rol.get_id(1)
+   email = 'ingemec.dmurcia@gmail.com'
+   rol = Rol.get_id(2)
    user = Usuario(username, password, email, rol.idRol)
    user.create()
    return 'Usuario creado'
@@ -34,7 +34,7 @@ def registro():
 @app.route('/login')
 def login():   
    password = 'misiontic2021'
-   email = 'mrodriguezrodriguez380@gmail.com'
+   email = 'ingemec.dmurcia@gmail.com'
    valida = Usuario.login(email, password)
    return str(valida)
 
@@ -44,7 +44,7 @@ def Listarcancion():
     NCancion = {}
     canciones = Cancion.filtroCancion()
     for cancion in canciones:
-        NCancion[canciones.index(cancion)] = str(cancion)
+        NCancion[canciones.index(cancion)] = cancion.Nombre + ' ' + cancion.Duracion
         print (cancion)        
     return NCancion
 
@@ -52,27 +52,27 @@ def Listarcancion():
 def Listarcategoria():
     NCategoria = {}
     #categorias = Categoria.get_categorias(  )
-    categorias = Cancion.query.filter_by(CategoriaId=2).all()
+    categorias = Cancion.filtroCategoria()
     for categoria in categorias:
-        NCategoria[categorias.index(categoria)] = categoria.__str__()
+        NCategoria[categorias.index(categoria)] = categoria.Nombre + ' ' + str(categoria.Año) + ' ' + categoria.Duracion
         print (categoria)      
     return NCategoria
 
 @app.route('/fxartista')
 def Listarartista():
     NArtista = {}
-    artistas = Cancion.query.filter_by(ArtistaId=7).all()
+    artistas = Cancion.filtroArtista()
     for artista in artistas:
-        NArtista[artistas.index(artista)] = artista._str_()
+        NArtista[artistas.index(artista)] = artista.Nombre + ' ' + str(artista.Año) + ' ' + artista.Duracion
         print (artista)        
     return NArtista
 
 @app.route('/fxgeneracion')
 def Listargeneracion():
     NGeneracion = {}
-    generaciones = Cancion.query.filter_by(GeneracionId=2).all()
+    generaciones = Cancion.filtroGeneracion()
     for generacion in generaciones:
-        NGeneracion[generaciones.index(generacion)] = generacion._str_()
+        NGeneracion[generaciones.index(generacion)] = generacion.__str__()
         print (generacion)        
     return NGeneracion
 
