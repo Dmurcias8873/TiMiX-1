@@ -29,22 +29,20 @@ class Usuario(db.Model):
         
     def __str__(self):
         return f'<Usuario> {self.NombreU} {self.Email} {self.RolId} {self.Fecha}'
+
+    def create(self):
+        db.session.add(self)
+        db.session.commit()    
     
     @staticmethod
     def get_all():
-        return Usuario.query.all()
-    
-    @staticmethod
-    def create():
-        db.session.add()
-        db.session.commit()
-
+        return Usuario.query.all() 
+        
     @staticmethod
     def Nameuser(email):
         name = Usuario.query.with_entities(Usuario.NombreU).filter_by(Email=email).first()
         return str(name.NombreU)
-        
-        
+                
     @staticmethod
     def login(email, password):
         success = False
