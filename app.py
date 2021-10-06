@@ -1,5 +1,5 @@
-import re
-from flask import Flask
+
+from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
@@ -9,6 +9,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://glbybbbgetizbw:4a6d84cd18a
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+app.secret_key = 'mysecretkey'
 bycrypt = Bcrypt(app)
 
 from models.cancion import Cancion
@@ -20,23 +21,39 @@ from models.listas import Listas
 from models.usuario import Usuario
 from models.rol import Rol
 
-@app.route('/registro')
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+@app.route('/registro', methods = ['POST', 'GET'])
 def registro():
+    if request.method == 'POST':    
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+        rol = Rol.get_id(2)
+        user = Usuario(username, password, email, rol.idRol)
+        user.create()
+        flash('Usuario creado con exito')
+        return redirect(url_for('index'))
+    return render_template('registro.html')
 
-   username = 'DaironM'
-   password = 'misiontic2021'
-   email = 'ingemec.dmurcia@gmail.com'
-   rol = Rol.get_id(2)
-   user = Usuario(username, password, email, rol.idRol)
-   user.create()
-   return 'Usuario creado'
 
-@app.route('/login')
-def login():   
-   password = 'misiontic2021'
-   email = 'ingemec.dmurcia@gmail.com'
-   valida = Usuario.login(email, password)
-   return str(valida)
+@app.route('/login', methods = ['POST', 'GET'])
+def login():
+    if request.method == 'POST':   
+        password = request.form['password']
+        email = request.form['email']
+        valida = Usuario.login(email, password)
+        if valida:
+            user = Usuario.Nameuser(email)
+            flash('Bienvenido' +' ' + user +' ')
+            return redirect(url_for('index'))
+        else:
+            flash('Datos errados, verifique nuevamente')
+            return redirect(url_for('index'))
+    return render_template('login.html')
 
 
 @app.route('/canciones')
@@ -76,22 +93,5 @@ def Listargeneracion():
         print (generacion)        
     return NGeneracion
 
-#@app.route('/')
-#def hello():
-#    NCancion = ''
-#    canciones = Cancion.get_all()
-#    for cancion in canciones:
-#        NCancion += cancion.Nombre
-#        print(cancion)
-#    return NCancion
-
-
-
-#@app.rohte('/login')
-#def login():
-#def login():
-#    success = False
-#    user = Usuario.get_email(email)
-#    
-#    if (user):
-#        
+if __name__ == '__main__':
+    app.run(port = 3000)

@@ -34,10 +34,16 @@ class Usuario(db.Model):
     def get_all():
         return Usuario.query.all()
     
-    def create(self):
-        db.session.add(self)
+    @staticmethod
+    def create():
+        db.session.add()
         db.session.commit()
 
+    @staticmethod
+    def Nameuser(email):
+        name = Usuario.query.with_entities(Usuario.NombreU).filter_by(Email=email).first()
+        return str(name.NombreU)
+        
         
     @staticmethod
     def login(email, password):
