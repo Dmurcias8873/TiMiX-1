@@ -22,7 +22,7 @@ from models.rol import Rol
 
 @app.route('/registro')
 def registro():
-   
+
    username = 'DaironM'
    password = 'misiontic2021'
    email = 'ingemec.dmurcia@gmail.com'
