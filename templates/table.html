@@ -7,6 +7,10 @@
             <th class = 'text-info'>Cancion</th>
             <th class = 'text-info'>Año</th>
             <th class = 'text-info'>Duracion</th>
+            <th class = 'text-info'>Album</th>
+            <th class = 'text-info'>Artista</th>
+            <th class = 'text-info'>Genero</th>
+            <th class = 'text-info'>Generaciones</th>
         </tr>
     </thead>
     <tbody>
@@ -22,13 +26,17 @@
         $('#data').DataTable({
             ajax: '/api/data',
             responsive: true,
-            serverSide: true,
+            serverSide: false,
             columns: [
                 { data: 'Nombre' },
                 { data: 'Año' },
                 { data: 'Duracion', orderable: false },
+                { data: 'Album', orderable: false },
+                { data: 'Artista', orderable: false },
+                { data: 'Genero', orderable: false },
+                { data: 'Generacion', orderable: false },
             ],
-            columnDefs: [{targets: [0,1,2],
+            columnDefs: [{targets: [0,1,2,3,4,5,6],
             render: function ( data, type, row ) {
             color = 'white';
             return '<span style="color:' + color + '">' + data + '</span>';

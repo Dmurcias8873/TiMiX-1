@@ -68,48 +68,63 @@ def timix():
 
 @app.route('/api/data')
 def data():
-    query = Cancion.query
+    # query = Cancion.query
 
-    # search filter
+    # # search filter
 
-    search = request.args.get('search[value]')
-    if search:
-        query = query.filter(db.or_(
-            Cancion.Nombre.like(f'%{search}%'),
-        ))
-    total_filtered = query.count()
+    # search = request.args.get('search[value]')
+    # if search:
+    #     query = query.filter(db.or_(
+    #         Cancion.Nombre.like(f'%{search}%'),
+    #     ))
+    # total_filtered = query.count()
 
 
-    # sorting
-    order = []
-    i = 0
-    while True:
-        col_index = request.args.get(f'order[{i}][column]')
-        if col_index is None:
-            break
-        col_name = request.args.get(f'columns[{col_index}][data]')
-        if col_name not in ['Nombre', 'Año', 'Duracion']:
-            col_name = 'Nombre'
-        descending = request.args.get(f'order[{i}][dir]') == 'desc'
-        col = getattr(Cancion, col_name)
-        if descending:
-            col = col.desc()
-        order.append(col)
-        i += 1
-    if order:
-        query = query.order_by(*order)
+    # # sorting
+    # order = []
+    # i = 0
+    # while True:
+    #     col_index = request.args.get(f'order[{i}][column]')
+    #     if col_index is None:
+    #         break
+    #     col_name = request.args.get(f'columns[{col_index}][data]')
+    #     if col_name not in ['Nombre', 'Año', 'Duracion']:
+    #         col_name = 'Nombre'
+    #     descending = request.args.get(f'order[{i}][dir]') == 'desc'
+    #     col = getattr(Cancion, col_name)
+    #     if descending:
+    #         col = col.desc()
+    #     order.append(col)
+    #     i += 1
+    # if order:
+    #     query = query.order_by(*order)
 
-    # pagination
-    start = request.args.get('start', type=int)
-    length = request.args.get('length', type=int)
-    query = query.offset(start).limit(length)
+    # # pagination
+    # start = request.args.get('start', type=int)
+    # length = request.args.get('length', type=int)
+    # query = query.offset(start).limit(length)
 
     # response
+    all_cancion=[]
+    for cancion in Cancion.get_all():
+        all_cancion.append(
+        {
+            'Nombre': cancion.Nombre,
+            'Año': cancion.Año,
+            'Duracion': cancion.Duracion,
+            'Album': cancion.Album,
+            'Artista': cancion.NombreA,
+            'Genero': cancion.NombreCat,
+            'Generacion': cancion.NombreG
+        }
+        )
     return {
-        'data': [cancion.to_dict() for cancion in query],
-        'recordsFiltered': total_filtered,
-        'recordsTotal': Cancion.query.count(),
-        'draw': request.args.get('draw', type=int),
+        
+        #'data': [cancion.to_dict() for cancion in Cancion.get_all()],
+        'data': all_cancion,
+        #'recordsFiltered': total_filtered,
+        #'recordsTotal': Cancion.query.count(),
+        #'draw': request.args.get('draw', type=int),
     }
 
 
