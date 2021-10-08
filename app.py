@@ -27,9 +27,9 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/registro', methods = ['POST', 'GET'])
+@app.route('/registro', methods = ['GET', 'POST'])
 def registro():
-    if request.method == 'POST':    
+    if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
@@ -41,9 +41,9 @@ def registro():
     return render_template('registro.html')
 
 
-@app.route('/login', methods = ['POST', 'GET'])
+@app.route('/login', methods = ['GET', 'POST'])
 def login():
-    if request.method == 'POST':   
+    if request.method == 'POST':
         password = request.form['password']
         email = request.form['email']
         valida = Usuario.login(email, password)
@@ -128,7 +128,7 @@ def Listarcategoria():
     categorias = Cancion.filtroCategoria()
     for categoria in categorias:
         NCategoria[categorias.index(categoria)] = categoria.Nombre
-        print (categoria)      
+        print (categoria)
     return NCategoria
 
 @app.route('/fxartista')
@@ -137,7 +137,7 @@ def Listarartista():
     artistas = Cancion.filtroArtista()
     for artista in artistas:
         NArtista[artistas.index(artista)] = artista.Nombre + ' ' + str(artista.Año) + ' ' + artista.Duracion
-        print (artista)        
+        print (artista)
     return NArtista
 
 @app.route('/fxgeneracion')
@@ -146,7 +146,7 @@ def Listargeneracion():
     generaciones = Cancion.filtroGeneracion()
     for generacion in generaciones:
         NGeneracion[generaciones.index(generacion)] = generacion.__str__()
-        print (generacion)        
+        print (generacion)
     return NGeneracion
 
 if __name__ == '__main__':
