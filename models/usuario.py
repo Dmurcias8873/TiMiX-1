@@ -41,7 +41,7 @@ class Usuario(db.Model):
     @staticmethod
     def Nameuser(email):
         name = Usuario.query.with_entities(Usuario.NombreU).filter_by(Email=email).first()
-        return str(name.NombreU)
+        return name.NombreU
                 
     @staticmethod
     def login(email, password):

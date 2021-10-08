@@ -1,0 +1,41 @@
+{% extends "tcancion.html" %}
+
+{% block content %}
+<table id="data" class="mdc-data-table__cell"  cellspacing="0" width = "100%">
+    <thead>
+        <tr>            
+            <th class = 'text-info'>Cancion</th>
+            <th class = 'text-info'>Año</th>
+            <th class = 'text-info'>Duracion</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+
+
+<script>
+    $(document).ready(function () {
+        $('#data').DataTable({
+            ajax: '/api/data',
+            responsive: true,
+            serverSide: true,
+            columns: [
+                { data: 'Nombre' },
+                { data: 'Año' },
+                { data: 'Duracion', orderable: false },
+            ],
+            columnDefs: [{targets: [0,1,2],
+            render: function ( data, type, row ) {
+            color = 'white';
+            return '<span style="color:' + color + '">' + data + '</span>';
+}
+}]
+        });
+    });
+</script>
+{% endblock %}
+

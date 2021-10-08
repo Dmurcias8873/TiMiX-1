@@ -1,3 +1,7 @@
+from models.album import Album
+from models.artista import Artista
+from models.categoria import Categoria
+from models.generacion import Generacion
 from models.userlist import UserList
 from app import db
 
@@ -26,6 +30,13 @@ class Cancion(db.Model):
         self.CategoriaId = CategoriaId
         self.GeneracionId = GeneracionId
         self.Duracion = Duracion
+        
+    def to_dict(self):
+        return {
+            'Nombre': self.Nombre,
+            'Año': self.Año,
+            'Duracion': self.Duracion
+        }    
     
     def __str__(self):
         return f'Cancion {self.idcancion} , {self.Nombre} , {self.Año} , {self.ArtistaId} , {self.AlbumId} , {self.CategoriaId} , {self.GeneracionId} , {self.Duracion}'
@@ -33,7 +44,12 @@ class Cancion(db.Model):
 
     @staticmethod
     def get_all():
-        return Cancion.query.all()
+        print(Cancion.query)
+        return Cancion.query.with_entities(
+                    Cancion.Nombre, Cancion.Año, Cancion.Duracion, Categoria.NombreCat, Artista.NombreA, Album.Album, Generacion.NombreG).join(
+                    Categoria, Cancion.CategoriaId==Categoria.idCategoria).join(
+                    Artista, Cancion.ArtistaId==Artista.idArtista).join(Album, Cancion.AlbumId==Album.idAlbum).join(
+                    Generacion, Cancion.GeneracionId==Generacion.idGeneracion).all()
     
     @staticmethod
     def filtroCancion():

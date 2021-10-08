@@ -1,4 +1,4 @@
-#body {
+body {
     background-image: url(https://img.freepik.com/foto-gratis/jukebox-radio-antiguo-vintage-render-3d_44074-4769.jpg?size=626&ext=jpg);
     background-repeat: no-repeat;
     background-size: cover;
@@ -75,4 +75,16 @@
     text-decoration-style: none;
     text-decoration-line: none;
     cursor: pointer;
+}
+
+
+/* Estilo datatable*/
+
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_processing,
+.dataTables_wrapper .dataTables_paginate {
+    color: #5DC1B9;
 }

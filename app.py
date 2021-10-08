@@ -1,6 +1,7 @@
 
 from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import login_required, login_user, logout_user
 from flask_bcrypt import Bcrypt
 
 
@@ -48,21 +49,76 @@ def login():
         valida = Usuario.login(email, password)
         if valida:
             user = Usuario.Nameuser(email)
-            flash('Bienvenido' +' ' + user +' ')
-            return redirect(url_for('index'))
+            flash('Bienvenido' +' ' + str(user) +' ')
+            return redirect(url_for('timix'))
         else:
             flash('Datos errados, verifique nuevamente')
             return redirect(url_for('index'))
     return render_template('login.html')
 
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("index"))
+
+@app.route('/tcancion')
+def timix():
+    return render_template('table.html', title='Listado de canciones')
+
+@app.route('/api/data')
+def data():
+    query = Cancion.query
+
+    # search filter
+
+    search = request.args.get('search[value]')
+    if search:
+        query = query.filter(db.or_(
+            Cancion.Nombre.like(f'%{search}%'),
+        ))
+    total_filtered = query.count()
+
+
+    # sorting
+    order = []
+    i = 0
+    while True:
+        col_index = request.args.get(f'order[{i}][column]')
+        if col_index is None:
+            break
+        col_name = request.args.get(f'columns[{col_index}][data]')
+        if col_name not in ['Nombre', 'Año', 'Duracion']:
+            col_name = 'Nombre'
+        descending = request.args.get(f'order[{i}][dir]') == 'desc'
+        col = getattr(Cancion, col_name)
+        if descending:
+            col = col.desc()
+        order.append(col)
+        i += 1
+    if order:
+        query = query.order_by(*order)
+
+    # pagination
+    start = request.args.get('start', type=int)
+    length = request.args.get('length', type=int)
+    query = query.offset(start).limit(length)
+
+    # response
+    return {
+        'data': [cancion.to_dict() for cancion in query],
+        'recordsFiltered': total_filtered,
+        'recordsTotal': Cancion.query.count(),
+        'draw': request.args.get('draw', type=int),
+    }
+
 
 @app.route('/canciones')
 def Listarcancion():
     NCancion = {}
-    canciones = Cancion.filtroCancion()
+    canciones = Cancion.get_all()
     for cancion in canciones:
-        NCancion[canciones.index(cancion)] = cancion.Nombre + ' ' + cancion.Duracion
-        print (cancion)        
+        NCancion[canciones.index(cancion)] = cancion.Nombre + ' ' + str(cancion.Año) + ' ' + cancion.Duracion + ' ' + cancion.NombreCat + ' ' + cancion.NombreA + ' ' + cancion.Album + ' ' + cancion.NombreG
     return NCancion
 
 @app.route('/fxcategoria')
@@ -71,7 +127,7 @@ def Listarcategoria():
     #categorias = Categoria.get_categorias(  )
     categorias = Cancion.filtroCategoria()
     for categoria in categorias:
-        NCategoria[categorias.index(categoria)] = categoria.Nombre + ' ' + str(categoria.Año) + ' ' + categoria.Duracion
+        NCategoria[categorias.index(categoria)] = categoria.Nombre
         print (categoria)      
     return NCategoria
 
