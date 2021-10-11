@@ -1,21 +1,24 @@
 {% extends "tcancion.html" %}
 
 {% block content %}
-<table id="data" class="mdc-data-table__cell"  cellspacing="0" width = "100%">
-    <thead>
-        <tr>            
-            <th class = 'text-info'>Cancion</th>
-            <th class = 'text-info'>Año</th>
-            <th class = 'text-info'>Duracion</th>
-            <th class = 'text-info'>Album</th>
-            <th class = 'text-info'>Artista</th>
-            <th class = 'text-info'>Genero</th>
-            <th class = 'text-info'>Generaciones</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<div class="tablacancion">
+    <table id="data" class="mdl-data-table hover" cellspacing="0">
+        <thead>
+            <tr>
+                <th class='text-info'>Cancion</th>
+                <th class='text-info'>Año</th>
+                <th class='text-info'>Duracion</th>
+                <th class='text-info'>Album</th>
+                <th class='text-info'>Artista</th>
+                <th class='text-info'>Genero</th>
+                <th class='text-info'>Generaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
 {% endblock %}
 
 {% block scripts %}
@@ -23,23 +26,23 @@
 
 <script>
     $(document).ready(function () {
-        $('#data').DataTable({
+        var table = $('#data').DataTable({
             ajax: '/api/data',
             responsive: true,
             serverSide: false,
             columns: [
-                { data: 'Nombre' },
+                { data: 'Nombre'},
                 { data: 'Año' },
-                { data: 'Duracion', orderable: false },
-                { data: 'Album', orderable: false },
-                { data: 'Artista', orderable: false },
-                { data: 'Genero', orderable: false },
-                { data: 'Generacion', orderable: false },
+                { data: 'Duracion'},
+                { data: 'Album'},
+                { data: 'Artista' },
+                { data: 'Genero'},
+                { data: 'Generacion' }
             ],
-            columnDefs: [{targets: [0,1,2,3,4,5,6],
-            render: function ( data, type, row ) {
-            color = 'white';
-            return '<span style="color:' + color + '">' + data + '</span>';
+            columnDefs: [{targets: ['_all'],
+                render: function ( data, type, row ) {
+                color = 'white';
+                return '<span style="color:' + color + '">' + data + '</span>';
 }
 }]
         });

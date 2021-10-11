@@ -39,9 +39,15 @@ class Usuario(db.Model):
         return Usuario.query.all() 
         
     @staticmethod
-    def Nameuser(email):
-        name = Usuario.query.with_entities(Usuario.NombreU).filter_by(Email=email).first()
-        return name.NombreU
+    def valida(email):        
+        name = Usuario.query.with_entities(Usuario.rolId, Usuario.NombreU).filter_by(Email=email).first()
+        valida = bool(name)
+        return valida
+    
+    @staticmethod
+    def Nameuser(email):        
+        name = Usuario.query.with_entities(Usuario.rolId, Usuario.NombreU).filter_by(Email=email).first()
+        return name
                 
     @staticmethod
     def login(email, password):
@@ -49,4 +55,4 @@ class Usuario(db.Model):
         user = Usuario.query.filter_by(Email=email).first()
         if (user):        
             success = bycrypt.check_password_hash(user.Password, password)        
-        return success
+        return success, user

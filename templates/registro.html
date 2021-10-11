@@ -12,6 +12,13 @@
 <header class="container-fluid bg-primary d-flex justify-content-center">
     <p class="text-light mb-0 p-2 fs-6">La única forma de viajar en el tiempo es a través de la música</p>
 </header>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+  <div class="text-warning fw-bolder bg-light d-flex justify-content-end">{{message}}</div>
+{% endfor %}      
+{% endif %}
+{% endwith %} 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#"><span class='text-primary fs-1 fws-bold'>TiMiX</span>
@@ -21,48 +28,30 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-    
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.html">Canciones</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.html">Generos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.html">Artistas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.html">Generaciones</a>
-                    </li>
-    
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">  
                 </ul>
-                <!-- <form class="d-flex"> -->
-                <!-- <a type="btn" class="btn btn-outline-primary btn-sm me-2" href="{{url_for('login')}}" >playlist</a> -->
                 <a type="btn" class="btn btn-outline-primary btn-sm" href="{{url_for('index')}}">Volver</a>
-                <!--  -->
-                <!-- </form> -->
             </div>
         </div>
     </nav>    
-    <div class="container-fluid">
+    <div class="container">
         <div class="row justify-content-center pt-5 mt-5 m-1">
-            <div class="col-md-6 col-sm-8 col-xl-4 col-lg-5 formulario">
-                <form action="/registro" method="POST">
-                    <div class="form-group text-center pt-3">
+            <div class="col-md-4 formulario">
+                <form class='row g-3' action="/registro" method="POST">
+                    <div class="text-center pt-3">
                         <h1 class="text-light">REGISTRAR USUARIO</h1>
                     </div>
-                    <div class="form-group mx-sm-4 pt-3">
-                        <input type="text" name = 'username' class="form-control" placeholder="Ingrese su Nombre">
+                    <div class="pt-6">
+                        <input type="text" name = 'username' class="form-control text-light" placeholder="Ingrese su Nombre">
                     </div>
-                    <div class="form-group mx-sm-4 pt-3">
-                        <input type="text" name = 'email' class="form-control" placeholder="Ingrese su Email">
+                    <div class="">
+                        <input type="email" name = 'email' class="form-control text-light" placeholder="Ingrese su Email">
                     </div>
-                    <div class="form-group mx-sm-4 pt-3">
-                        <input type="text" name = 'password' class="form-control" placeholder="Ingrese su Contraseña">
+                    <div class="">
+                        <input type="password" name = 'password' class="form-control text-light" placeholder="Ingrese su Contraseña">
                     </div>
-                    <div class="form-group mx-sm-4 pt-5">
-                        <button type="submit" class="btn btn-outline-primary">REGISTRARSE</button>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-outline-primary ingresar">REGISTRARSE</button>
                     </div>
                 </form>
             </div>

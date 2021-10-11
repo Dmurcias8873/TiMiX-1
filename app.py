@@ -26,6 +26,30 @@ from models.rol import Rol
 def index():
     return render_template('index.html')
 
+@app.route('/ICancion', methods = ['GET', 'POST'])
+def insertdata():
+    artistas = Artista.ListarArtista()
+    albumes = Album.ListarAlbum()
+    categorias = Categoria.Listarcategoria()
+    generaciones = Generacion.ListaGeneracion()  
+    if request.method == 'POST':
+        artista = request.form['artistas']
+        album = request.form['albumes']
+        categoria = request.form['categorias']        
+        generacion = request.form['generaciones']        
+        cancion = request.form['cancion']        
+        año = request.form['año']        
+        duracion = request.form['duracion']
+        vArtista = Artista.get_id(artista)
+        vAlbum = Album.get_id(album)
+        vCategoria = Categoria.get_id(categoria)
+        vGeneracion = Generacion.get_id(generacion)
+        canciones = Cancion(cancion, año, vArtista.idArtista, vAlbum.idAlbum, vCategoria.idCategoria, vGeneracion.idGeneracion, duracion )
+        canciones.create()
+        flash('Cancion ingresada con exito')       
+        return redirect(url_for('insertdata'))                  
+    return render_template('cancion.html', artistas= artistas, albumes= albumes, categorias= categorias, generaciones= generaciones)
+
 
 @app.route('/registro', methods = ['GET', 'POST'])
 def registro():
@@ -33,12 +57,35 @@ def registro():
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
-        rol = Rol.get_id(2)
-        user = Usuario(username, password, email, rol.idRol)
-        user.create()
-        flash('Usuario creado con exito')
-        return redirect(url_for('index'))
+        rol = Rol.get_id(1)
+        valida = Usuario.Nameuser(email)
+        if valida:
+            flash('Usuario se encuentra registrado')
+            return redirect(url_for('registro')) 
+        else:
+            user = Usuario(username, password, email, rol.idRol)
+            user.create()
+            flash('Usuario creado con exito')
+            return redirect(url_for('registro'))           
     return render_template('registro.html')
+
+@app.route('/registro2', methods = ['GET', 'POST'])
+def registro2():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+        rol = Rol.get_id(2)
+        valida = Usuario.Nameuser(email)
+        if valida:
+            flash('Admin se encuentra registrado')
+            return redirect(url_for('registro2')) 
+        else:
+            user = Usuario(username, password, email, rol.idRol)
+            user.create()
+            flash('Usuario creado con exito')
+            return redirect(url_for('registro2'))
+    return render_template('registro2.html')
 
 
 @app.route('/login', methods = ['GET', 'POST'])
@@ -47,13 +94,16 @@ def login():
         password = request.form['password']
         email = request.form['email']
         valida = Usuario.login(email, password)
-        if valida:
-            user = Usuario.Nameuser(email)
-            flash('Bienvenido' +' ' + str(user) +' ')
+        user = Usuario.Nameuser(email)
+        if valida and user.rolId== 2:
+            flash('Bienvenido' +' administrador ' + str(user.NombreU) +' ')
+            return redirect(url_for('insertdata'))
+        elif valida and user.rolId==1:
+            flash('Bienvenido' +' ' + str(user.NombreU) +' ')
             return redirect(url_for('timix'))
         else:
             flash('Datos errados, verifique nuevamente')
-            return redirect(url_for('index'))
+            return redirect(url_for('login'))
     return render_template('login.html')
 
 @app.route("/logout")
@@ -68,45 +118,9 @@ def timix():
 
 @app.route('/api/data')
 def data():
-    # query = Cancion.query
-
-    # # search filter
-
-    # search = request.args.get('search[value]')
-    # if search:
-    #     query = query.filter(db.or_(
-    #         Cancion.Nombre.like(f'%{search}%'),
-    #     ))
-    # total_filtered = query.count()
-
-
-    # # sorting
-    # order = []
-    # i = 0
-    # while True:
-    #     col_index = request.args.get(f'order[{i}][column]')
-    #     if col_index is None:
-    #         break
-    #     col_name = request.args.get(f'columns[{col_index}][data]')
-    #     if col_name not in ['Nombre', 'Año', 'Duracion']:
-    #         col_name = 'Nombre'
-    #     descending = request.args.get(f'order[{i}][dir]') == 'desc'
-    #     col = getattr(Cancion, col_name)
-    #     if descending:
-    #         col = col.desc()
-    #     order.append(col)
-    #     i += 1
-    # if order:
-    #     query = query.order_by(*order)
-
-    # # pagination
-    # start = request.args.get('start', type=int)
-    # length = request.args.get('length', type=int)
-    # query = query.offset(start).limit(length)
-
-    # response
+    song = Cancion.get_all()
     all_cancion=[]
-    for cancion in Cancion.get_all():
+    for cancion in song:
         all_cancion.append(
         {
             'Nombre': cancion.Nombre,
@@ -118,51 +132,8 @@ def data():
             'Generacion': cancion.NombreG
         }
         )
-    return {
-        
-        #'data': [cancion.to_dict() for cancion in Cancion.get_all()],
-        'data': all_cancion,
-        #'recordsFiltered': total_filtered,
-        #'recordsTotal': Cancion.query.count(),
-        #'draw': request.args.get('draw', type=int),
-    }
+    return {'data': all_cancion}
 
-
-@app.route('/canciones')
-def Listarcancion():
-    NCancion = {}
-    canciones = Cancion.get_all()
-    for cancion in canciones:
-        NCancion[canciones.index(cancion)] = cancion.Nombre + ' ' + str(cancion.Año) + ' ' + cancion.Duracion + ' ' + cancion.NombreCat + ' ' + cancion.NombreA + ' ' + cancion.Album + ' ' + cancion.NombreG
-    return NCancion
-
-@app.route('/fxcategoria')
-def Listarcategoria():
-    NCategoria = {}
-    #categorias = Categoria.get_categorias(  )
-    categorias = Cancion.filtroCategoria()
-    for categoria in categorias:
-        NCategoria[categorias.index(categoria)] = categoria.Nombre
-        print (categoria)
-    return NCategoria
-
-@app.route('/fxartista')
-def Listarartista():
-    NArtista = {}
-    artistas = Cancion.filtroArtista()
-    for artista in artistas:
-        NArtista[artistas.index(artista)] = artista.Nombre + ' ' + str(artista.Año) + ' ' + artista.Duracion
-        print (artista)
-    return NArtista
-
-@app.route('/fxgeneracion')
-def Listargeneracion():
-    NGeneracion = {}
-    generaciones = Cancion.filtroGeneracion()
-    for generacion in generaciones:
-        NGeneracion[generaciones.index(generacion)] = generacion.__str__()
-        print (generacion)
-    return NGeneracion
 
 if __name__ == '__main__':
     app.run(debug=False)

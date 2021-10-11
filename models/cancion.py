@@ -40,17 +40,18 @@ class Cancion(db.Model):
     
     def __str__(self):
         return f'Cancion {self.idcancion} , {self.Nombre} , {self.Año} , {self.ArtistaId} , {self.AlbumId} , {self.CategoriaId} , {self.GeneracionId} , {self.Duracion}'
-    
+
+    def create(self):
+        db.session.add(self)
+        db.session.commit()      
 
     @staticmethod
     def get_all():
-        print(Cancion.query)
         return Cancion.query.with_entities(
                     Cancion.Nombre, Cancion.Año, Cancion.Duracion, Categoria.NombreCat, Artista.NombreA, Album.Album, Generacion.NombreG).join(
                     Categoria, Cancion.CategoriaId==Categoria.idCategoria).join(
                     Artista, Cancion.ArtistaId==Artista.idArtista).join(Album, Cancion.AlbumId==Album.idAlbum).join(
-                    Generacion, Cancion.GeneracionId==Generacion.idGeneracion).all()
-    
+                    Generacion, Cancion.GeneracionId==Generacion.idGeneracion)       
     @staticmethod
     def filtroCancion():
         return Cancion.query.with_entities(Cancion.Nombre, Cancion.Año, Cancion.Duracion).filter_by(CategoriaId=1).all()
@@ -66,6 +67,7 @@ class Cancion(db.Model):
     @staticmethod
     def filtroGeneracion():
         return Cancion.query.filter_by(GeneracionId=2).all()
+    
     
     
 
