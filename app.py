@@ -66,7 +66,7 @@ def registro():
             user = Usuario(username, password, email, rol.idRol)
             user.create()
             flash('Usuario creado con exito')
-            return redirect(url_for('registro'))           
+            return redirect(url_for('login'))           
     return render_template('registro.html')
 
 @app.route('/registro2', methods = ['GET', 'POST'])

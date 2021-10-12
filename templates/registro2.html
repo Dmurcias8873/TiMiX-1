@@ -45,13 +45,13 @@
             <div class="col-md-4 formulario">
                 <form class='row g-3' action="/registro2" method="POST">
                     <div class="text-center pt-3">
-                        <h1 class="text-light">REGISTRO DE ADMINISTRADORES</h1>
+                        <h1 class="text-light fs-4">REGISTRO DE ADMINISTRADORES</h1>
                     </div>
                     <div class="pt-6">
                         <input type="text" name = 'username' class="form-control text-light" placeholder="Ingrese su Nombre">
                     </div>
                     <div class="">
-                        <input type="email" name = 'email' class="form-control text-light" placeholder="Ingrese su Email">
+                        <input type="email" name = 'email' class="form-control text-light" style="text-transform:lowercase;" onkeyup="javascript:this.value=this.value.toLowerCase();" placeholder="Ingrese su Email">
                     </div>
                     <div class="">
                         <input type="password" name = 'password' class="form-control text-light" placeholder="Ingrese su Contraseña">

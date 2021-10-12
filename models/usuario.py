@@ -55,4 +55,4 @@ class Usuario(db.Model):
         user = Usuario.query.filter_by(Email=email).first()
         if (user):        
             success = bycrypt.check_password_hash(user.Password, password)        
-        return success, user
+            return success

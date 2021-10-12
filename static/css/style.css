@@ -6,7 +6,7 @@ body {
 }
 
 .formulario {
-    background: rgba(0, 0, 0, .);
+    background: rgba(0, 0, 0, .3);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.568);
@@ -34,8 +34,8 @@ body {
 .ingresar {
     background: #082567 ;
     border: #082567;
-    padding: 10px;
-    font-size: 16px;
+    padding: 7px 125px;
+    font-size: 14px;
     font-weight: 700!important;
     color: white;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.568);
